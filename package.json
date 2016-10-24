@@ -1,0 +1,47 @@
+{
+  "name": "pdb-web-components",
+  "version": "0.1.0",
+  "description": "pdb web-components",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "module": "src/components/index.js",
+  "jsnext:main": "src/components/index.js",
+  "main": "dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aurel-l/data-loader.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Aurélien Luciani <luciani@ebi.ac.uk> (https://github.com/aurel-l)",
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore \"./**/*.js\"",
+    "bundle": "rollup -c",
+    "livereload": "livereload \"dist, test\"",
+    "build": "rimraf dist && npm run bundle -- --environment NODE_ENV:production",
+    "start": "rimraf dist && npm run livereload & npm run bundle -- --watch",
+    "test": "echo 'no test at the moment'",
+    "prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "babel-preset-babili": "^0.0.5",
+    "babel-preset-es2017": "^6.16.0",
+    "babel-preset-stage-3": "^6.17.0",
+    "eslint": "^3.8.1",
+    "eslint-config-standard": "^6.2.0",
+    "eslint-plugin-import": "^2.0.1",
+    "eslint-plugin-promise": "^3.3.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "livereload": "^0.6.0",
+    "rimraf": "^2.5.4",
+    "rollup": "^0.36.3",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-eslint": "^3.0.0",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-watch": "^2.5.0"
+  },
+  "dependencies": {
+    "data-loader": "^0.1.4"
+  }
+}
