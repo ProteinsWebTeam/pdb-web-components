@@ -553,7 +553,6 @@ class PdbPrints extends HTMLElement {
   }
 
   disconnectedCallback () {
-    this._plannedRender = false;
     this.removeEventListener('load', this._handleLoadEvent);
   }
 

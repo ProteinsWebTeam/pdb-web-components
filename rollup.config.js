@@ -20,7 +20,12 @@ export default {
     }),
     eslint(),
     babel({
-      presets: ['es2017', 'stage-3']
+      presets: ['es2017', 'stage-3'],
+      env: {
+        production: {
+          presets: ['babili'],
+        }
+      }
     }),
   ],
   intro: PROD ? '' : `
