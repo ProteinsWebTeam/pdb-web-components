@@ -315,6 +315,9 @@ const categoryUrls = new Map([
   ],
 ]);
 
+// Unique id, for each instance, used for namespacing
+let uniqueId = 1;
+
 const categories = new Set(categoryUrls.keys());
 
 // Custom Element definition
@@ -329,12 +332,14 @@ class PdbPrints extends HTMLElement {
 
   _render () {
     if (!this.data) return;
-    if (!this.shadowRoot) {
-      this.attachShadow({mode: 'open'});
-    }
     const id = this.data.entry_entity.slice(0, 4);
     const sizePx = `${this.size}px`;
-    this.shadowRoot.innerHTML = `
+    // If first render
+    if (!this.shadowRoot) {
+      this.attachShadow({mode: 'open'});
+      this.classList.add(this._namespace);
+    }
+    const style = `
       <style>
         :host {
           font-family: "Courier New";
@@ -344,36 +349,55 @@ class PdbPrints extends HTMLElement {
           overflow: hidden;
         }
         
-        a {
+        :host a {
           text-decoration: none;
           cursor: pointer;
         }
         
-        .root {
+        :host > .root {
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
-          flex-direction: ${
-            this.orientation === 'horizontal' ? 'row' : 'column'
+          ${this.orientation === 'horizontal'
+            ? `-webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;`
+            : `-ms-flex-direction: column;
+            flex-direction: column;`
           };
         }
         
-        .root > * {
+        :host > .root > * {
           height: ${sizePx};
           width: ${sizePx};
         }
         
-        .root > span {
+        :host > .root > span {
+          display: -webkit-box;
+          display: -ms-flexbox;
           display: flex;
+          -webkit-box-orient: vertical;
+          -webkit-box-direction: normal;
+          -ms-flex-direction: column;
           flex-direction: column;
+          -webkit-box-pack: center;
+          -ms-flex-pack: center;
           justify-content: center;
+          -webkit-box-align: center;
+          -ms-flex-align: center;
           align-items: center;
         }
         
-        .root > a {
+        :host > .root > a {
           border-radius: 10%;
           background-color: #81C16E;
           background-color: var(--theme-color, #81C16E);
         }
       </style>
+    `.trim();
+    (this.shadyRoot || this.shadowRoot).innerHTML = `
+      ${this.shadyRoot ? style.replace(/:host/g, `.${this._namespace}`) : style}
       <span class="root">
         <span>
           <a
@@ -494,7 +518,7 @@ class PdbPrints extends HTMLElement {
     if (!_values) _values = [];
     // If it's a string, might be coming from DOM attribute, clean up and parse
     if (typeof _values === 'string') {
-      _values = _values.replace(/[\[\]'"]/m).split(/\s*,\s*/);
+      _values = _values.replace(/[[\]'"]/m).split(/\s*,\s*/);
     }
     // Removes invalid values
     _values = _values.filter(v => categories.has(v));
@@ -521,7 +545,7 @@ class PdbPrints extends HTMLElement {
     if (!_values) _values = [];
     // If it's a string, might be coming from DOM attribute, clean up and parse
     if (typeof _values === 'string') {
-      _values = _values.replace(/[\[\]'"]/m).split(/\s*,\s*/);
+      _values = _values.replace(/[[\]'"]/m).split(/\s*,\s*/);
     }
     // Removes invalid values
     _values = _values.filter(v => categories.has(v));
@@ -546,6 +570,12 @@ class PdbPrints extends HTMLElement {
     this._size = 36;
     this._include = new Set(categories);
     this._exclude = new Set();
+    // bind functions
+    this._handleLoadEvent = this._handleLoadEvent.bind(this);
+    this._planRender = this._planRender.bind(this);
+    this._render = this._render.bind(this);
+    // class namespacing (for pseudo-scoped CSS)
+    this._namespace = `${this.tagName.toLowerCase()}-${uniqueId++}`;
   }
 
   connectedCallback () {

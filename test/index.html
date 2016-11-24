@@ -3,10 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <title>Test web components</title>
-  <script async defer src="/dist/index.js"></script>
+  <script defer>
+    loadScript = url => new Promise((res, rej) => {
+      const s = document.createElement('script');
+      s.onload = res;
+      s.onerror = rej;
+      s.src = url;
+      document.head.appendChild(s);
+    });
+    supportsCustomElements = () => new Promise((res, rej) => {
+      if (window.customElements) {
+        res();
+      } else {
+        rej();
+      }
+    });
+  </script>
+  <script defer>
+    loadScript(`//${location.hostname}:35729/livereload.js?snipver=1`);
+  </script>
+  <script defer>
+    supportsCustomElements()
+      // if doesn't support, add polyfill
+      .catch(() => loadScript(
+        '/node_modules/skatejs-web-components/dist/index-with-deps.js'
+      ))
+      .then(() => loadScript('/dist/index.js'));
+  </script>
 </head>
 <body>
   <div>
+    <p>horizontal</p>
     <pdb-prints>
       <pdb-data-loader pdbid="1cbs"></pdb-data-loader>
     </pdb-prints>
@@ -15,10 +42,20 @@
     </pdb-prints>
   </div>
   <div>
+    <p>vertical</p>
     <pdb-prints orientation="vertical">
       <pdb-data-loader pdbid="1cbs"></pdb-data-loader>
     </pdb-prints>
     <pdb-prints size="48" orientation="vertical">
+      <pdb-data-loader pdbid="1cbs"></pdb-data-loader>
+    </pdb-prints>
+  </div>
+  <div>
+    <p>horizontal, with custom color</p>
+    <pdb-prints style="--theme-color: lightblue">
+      <pdb-data-loader pdbid="1cbs"></pdb-data-loader>
+    </pdb-prints>
+    <pdb-prints size="48" style="--theme-color: lightblue">
       <pdb-data-loader pdbid="1cbs"></pdb-data-loader>
     </pdb-prints>
   </div>

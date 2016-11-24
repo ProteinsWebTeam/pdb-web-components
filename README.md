@@ -3,7 +3,7 @@ PDB web components
 
 _in development_
 
-A standard web component implementation of the PDB components
+A standard web component (v1) implementation of the PDB components
 ([PDB Component Library](http://www.ebi.ac.uk/pdbe/pdb-component-library/index.html))
 
 ## Usage
@@ -48,16 +48,22 @@ And then in the HTML, use like so:
 
 ## Compatibility
 
-This element assumes support for at least ES2016.
+This element assumes support for at least ES2015.
 To support older browsers you might need to transpile the code you use
 down to the version you are planning on supporting.
 
-You might need to use a polyfill for browser not supporting Custom
-Elements.
-[webcomponents.js](https://github.com/webcomponents/webcomponentsjs) is
-recommended.
+You might need to use a polyfill for browsers not supporting Custom
+Elements **v1** (not v0).
+See [webcomponents.js](https://github.com/webcomponents/webcomponentsjs) or
+[SkateJS Web Components](https://github.com/skatejs/web-components).
+
+Check in the `test` folder for example of simple usage with optional loading of
+the polyfill.
 
 ## List of components included
+
+They work independently from one another, so you can pick and choose which ones
+to load and use in your page.
 
 ### `pdb-data-loader`
 

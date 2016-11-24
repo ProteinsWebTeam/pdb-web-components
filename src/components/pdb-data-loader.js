@@ -72,6 +72,9 @@ class PdbDataLoader extends HTMLElement {
     super();
     // set defaults
     this._pdbid = null;
+    // bind functions
+    this._planRender = this._planRender.bind(this);
+    this._render = this._render.bind(this);
   }
 
   connectedCallback () {
