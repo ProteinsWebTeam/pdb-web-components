@@ -327,7 +327,7 @@ class PdbPrints extends HTMLElement {
   }
 
   _handleLoadEvent (event) {
-    this.data = selector(event.detail);
+    this.data = selector(event.detail.payload);
   }
 
   _render () {

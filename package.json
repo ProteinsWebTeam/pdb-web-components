@@ -1,6 +1,6 @@
 {
   "name": "pdb-web-components",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "pdb web-components",
   "files": [
     "dist",
@@ -52,7 +52,7 @@
     "rollup-watch": "^2.5.0",
     "skatejs-web-components": "^5.0.0"
   },
-  "dependencies": {
-    "data-loader": "^0.1.7"
+  "peerDependencies": {
+    "data-loader": "^0.2.0"
   }
 }
